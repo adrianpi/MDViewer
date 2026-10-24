@@ -25,6 +25,7 @@ public sealed class MainForm : Form, IMessageFilter
     private readonly ToolStripMenuItem _reloadMenuItem;
     private readonly ToolStripButton _reloadButton;
     private readonly ToolStripMenuItem _printMenuItem;
+	private readonly ToolStripButton _printButton;
 
     private string? _currentPath;
     private bool _printPreviewOpen;
@@ -70,6 +71,14 @@ public sealed class MainForm : Form, IMessageFilter
             ToolTipText = "Open a Markdown file (Ctrl+O)"
         };
         openButton.Click += OpenClicked;
+		
+		_printButton = new ToolStripButton("Print")
+        {
+            DisplayStyle = ToolStripItemDisplayStyle.Text,
+            ToolTipText = "Print the current file (Ctrl+P)",
+            Enabled = false
+        };
+        _printButton.Click += PrintClicked;
 
         _reloadButton = new ToolStripButton("Reload")
         {
@@ -88,6 +97,7 @@ public sealed class MainForm : Form, IMessageFilter
         var toolbar = new ToolStrip();
         toolbar.GripStyle = ToolStripGripStyle.Hidden;
         toolbar.Items.Add(openButton);
+		toolbar.Items.Add(_printButton);
         toolbar.Items.Add(_reloadButton);
         toolbar.Items.Add(new ToolStripSeparator());
         toolbar.Items.Add(_fileLabel);
@@ -237,6 +247,7 @@ public sealed class MainForm : Form, IMessageFilter
             _reloadMenuItem.Enabled = true;
             _reloadButton.Enabled = true;
             _printMenuItem.Enabled = true;
+			_printButton.Enabled = true;
             _fileLabel.Text = Path.GetFileName(fullPath);
             _fileLabel.ToolTipText = fullPath;
             Text = $"{Path.GetFileName(fullPath)} - Markdown Viewer";
