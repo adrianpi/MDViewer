@@ -33,6 +33,26 @@ dotnet run -- "C:\path\to\document.md"
 
 The project targets `net10.0-windows`; any Windows .NET 10 SDK is sufficient.
 
+## Windows installer
+
+Install [Inno Setup 6 or 7](https://jrsoftware.org/isinfo.php), then run this from
+the repository root:
+
+```powershell
+.\installer\Build-Installer.ps1
+```
+
+The script publishes a self-contained x64 release and creates
+`installer\Output\MDViewer-Setup-1.0.0.exe`. The installer offers an optional,
+checked-by-default checkbox for associating `.md` files with MDViewer, plus an
+optional desktop shortcut, and creates a Start menu shortcut with standard
+Windows uninstall support. The association is per-user and is restored (when
+unchanged) if the application is uninstalled. The installer offers to open
+Windows Default apps settings so the user can confirm MDViewer for `.md` files
+when Windows protects an existing default-app choice.
+
+[Download the MDViewer 1.0.0 installer for Windows x64](installer/Output/MDViewer-Setup-1.0.0.exe).
+
 ## Tests
 
 ```powershell
