@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Md2Html</RootNamespace>
+    <AssemblyName>Md2Html</AssemblyName>
+    <StartupObject>Md2Html.Program</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The HTML5 named character table used by CommonMark is data, not code,
+         so it is kept in a resource instead of a 2000-line switch statement. -->
+    <EmbeddedResource Include="Markdown\Resources\html-entities.txt" LogicalName="HtmlEntities.txt" />
+  </ItemGroup>
+
+</Project>
