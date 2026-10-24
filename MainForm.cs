@@ -11,8 +11,10 @@ namespace Md2Html;
 /// Viewer window. All Markdown knowledge lives in <see cref="Markdown.MarkdownConverter"/>;
 /// this class only handles files, menus, drag and drop, and the embedded browser.
 /// </summary>
-public sealed class MainForm : Form
+public sealed class MainForm : Form, IMessageFilter
 {
+    private const int WmKeyDown = 0x0100;
+
     private static readonly string[] MarkdownExtensions =
         [".md", ".markdown", ".mdown", ".mkd", ".mdwn", ".mkdn"];
 
@@ -22,8 +24,10 @@ public sealed class MainForm : Form
     private readonly ToolStripLabel _fileLabel;
     private readonly ToolStripMenuItem _reloadMenuItem;
     private readonly ToolStripButton _reloadButton;
+    private readonly ToolStripMenuItem _printMenuItem;
 
     private string? _currentPath;
+    private bool _printPreviewOpen;
 
     public MainForm(string? initialFile = null)
     {
@@ -44,8 +48,14 @@ public sealed class MainForm : Form
             ShortcutKeys = Keys.F5,
             Enabled = false
         };
+        _printMenuItem = new ToolStripMenuItem("&Print...", null, PrintClicked)
+        {
+            ShortcutKeys = Keys.Control | Keys.P,
+            Enabled = false
+        };
         fileMenu.DropDownItems.Add(openMenuItem);
         fileMenu.DropDownItems.Add(_reloadMenuItem);
+        fileMenu.DropDownItems.Add(_printMenuItem);
         fileMenu.DropDownItems.Add(new ToolStripSeparator());
         fileMenu.DropDownItems.Add(new ToolStripMenuItem("E&xit", null, (_, _) => Close()));
 
@@ -130,6 +140,8 @@ public sealed class MainForm : Form
         AllowDrop = true;
         DragEnter += FormDragEnter;
         DragDrop += FormDragDrop;
+        Application.AddMessageFilter(this);
+        FormClosed += (_, _) => Application.RemoveMessageFilter(this);
         Shown += (_, _) =>
         {
             if (!string.IsNullOrWhiteSpace(initialFile))
@@ -137,6 +149,23 @@ public sealed class MainForm : Form
                 LoadDocument(initialFile);
             }
         };
+    }
+
+    public bool PreFilterMessage(ref Message m)
+    {
+        // The WebBrowser ActiveX control handles Ctrl+P itself before the menu
+        // shortcut sees it. Intercepting the key at the application message loop
+        // makes Ctrl+P use our print preview consistently.
+        if (m.Msg != WmKeyDown ||
+            m.WParam != (IntPtr)Keys.P ||
+            (ModifierKeys & Keys.Control) == 0 ||
+            (ModifierKeys & (Keys.Alt | Keys.Shift)) != 0)
+        {
+            return false;
+        }
+
+        PrintClicked(this, EventArgs.Empty);
+        return true;
     }
 
     private void OpenClicked(object? sender, EventArgs e)
@@ -164,6 +193,31 @@ public sealed class MainForm : Form
         }
     }
 
+    private void PrintClicked(object? sender, EventArgs e)
+    {
+        if (_currentPath is null || _printPreviewOpen)
+        {
+            return;
+        }
+
+        _printPreviewOpen = true;
+        try
+        {
+            using var document = new HtmlPrintDocument(_browser);
+            using var preview = new PrintPreviewDialog
+            {
+                Document = document,
+                StartPosition = FormStartPosition.CenterParent,
+                Size = new Size(1000, 800)
+            };
+            preview.ShowDialog(this);
+        }
+        finally
+        {
+            _printPreviewOpen = false;
+        }
+    }
+
     private void LoadDocument(string path)
     {
         try
@@ -182,6 +236,7 @@ public sealed class MainForm : Form
             _currentPath = fullPath;
             _reloadMenuItem.Enabled = true;
             _reloadButton.Enabled = true;
+            _printMenuItem.Enabled = true;
             _fileLabel.Text = Path.GetFileName(fullPath);
             _fileLabel.ToolTipText = fullPath;
             Text = $"{Path.GetFileName(fullPath)} - Markdown Viewer";
