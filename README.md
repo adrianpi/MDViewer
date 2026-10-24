@@ -54,5 +54,8 @@ The project targets `net10.0-windows`; any Windows .NET 10 SDK is sufficient.
 - Raw HTML is part of CommonMark and is rendered by design. As with an HTML file,
   only open Markdown documents you trust. Clicking a link to a non-Markdown local
   file uses ShellExecute, so links to executables or scripts launch them.
-- The WebBrowser control is the browser shipped with Windows. The application
-  opts into its IE11 edge rendering mode so the document styling is preserved.
+- The WebBrowser control is the browser shipped with Windows. When modern IE11
+  rendering is not already enabled for the executable, the application asks
+  before adding the per-user `FEATURE_BROWSER_EMULATION` registry value. If you
+  decline, it runs in compatibility mode instead; the document still opens and
+  links still work, but styling may be simplified.

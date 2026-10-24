@@ -14,9 +14,10 @@ internal static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
 
-        // WebBrowser is Internet Explorer based. Without this opt-in it may render
+        // WebBrowser is Internet Explorer based. Without an opt-in it may render
         // in IE7 compatibility mode, which would destroy the layout of the page.
-        BrowserEmulation.EnableModernMode();
+        // This asks before writing anything to the per-user registry.
+        BrowserEmulation.ConfigureRenderingMode();
 
         // A path supplied on the command line is opened immediately. Everything
         // after the executable is treated as the path, so quoted paths and spaces
