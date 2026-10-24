@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Md2Html.Markdown;
+using MDViewer.Markdown;
 
-namespace Md2Html.Tests;
+namespace MDViewer.Tests;
 
 /// <summary>
 /// Small dependency-free test runner for the Markdown engine. It executes the

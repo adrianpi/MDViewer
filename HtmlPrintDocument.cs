@@ -4,7 +4,7 @@ using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Md2Html;
+namespace MDViewer;
 
 /// <summary>
 /// Adapts the rendered HTML document to the standard <see cref="PrintPreviewDialog"/>.

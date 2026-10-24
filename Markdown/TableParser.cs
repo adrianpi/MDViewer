@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// Parsing rules for GitHub tables. A table row is a line of cells separated by

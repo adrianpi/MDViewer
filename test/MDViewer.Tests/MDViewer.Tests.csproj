@@ -6,12 +6,12 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Md2Html.Tests</RootNamespace>
-    <AssemblyName>Md2Html.Tests</AssemblyName>
+    <RootNamespace>MDViewer.Tests</RootNamespace>
+    <AssemblyName>MDViewer.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Md2Html.csproj" />
+    <ProjectReference Include="..\..\MDViewer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -12,7 +12,7 @@ comes from the standard data table embedded in the executable.
 ## Usage
 
 ```text
-Md2Html.exe "C:\path\to\document.md"
+MDViewer.exe "C:\path\to\document.md"
 ```
 
 The optional command-line path is opened immediately. Inside the window you can
@@ -36,7 +36,7 @@ The project targets `net10.0-windows`; any Windows .NET 10 SDK is sufficient.
 ## Tests
 
 ```powershell
-dotnet run --project test/Md2Html.Tests
+dotnet run --project test/MDViewer.Tests
 ```
 
 The test runner has no external dependencies. It executes the CommonMark 0.31.2
@@ -55,7 +55,7 @@ option checks.
 - `MainForm.cs` contains only the viewer UI: menus, file handling, drag and drop,
   and the embedded browser.
 - `HtmlPage.cs` wraps the rendered HTML fragment in a full document with styling.
-- `test/Md2Html.Tests/` contains the dependency-free conversion test runner and
+- `test/MDViewer.Tests/` contains the dependency-free conversion test runner and
   the official example data used by the tests.
 
 ## Notes

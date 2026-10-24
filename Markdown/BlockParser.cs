@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// Phase 1 of CommonMark parsing: build the block structure line by line.

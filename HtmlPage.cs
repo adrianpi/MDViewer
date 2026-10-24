@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Md2Html;
+namespace MDViewer;
 
 /// <summary>
 /// Wraps the HTML fragment produced by the Markdown engine in a complete document.
@@ -12,7 +12,7 @@ namespace Md2Html;
 internal static class HtmlPage
 {
     private const string LinkScript = """
-        function md2htmlOnClick(event) {
+        function mdviewerOnClick(event) {
             event = event || window.event;
             if (event.defaultPrevented || event.returnValue === false) {
                 return;
@@ -51,61 +51,14 @@ internal static class HtmlPage
             return false;
         }
         if (document.addEventListener) {
-            document.addEventListener('click', md2htmlOnClick, false);
+            document.addEventListener('click', mdviewerOnClick, false);
         } else if (document.attachEvent) {
-            document.attachEvent('onclick', md2htmlOnClick);
-        }
-        """;
-
-    private const string FindScript = """
-        function md2htmlFindText(text) {
-            if (!text || !document.body || !document.body.createTextRange) {
-                return false;
-            }
-
-            var range = null;
-            try {
-                if (document.selection) {
-                    range = document.selection.createRange();
-                }
-            } catch (error) {
-                range = null;
-            }
-
-            // A control selection or a selection outside the page cannot be used
-            // for text search; in that case begin at the start of the document.
-            var parent = null;
-            try {
-                if (range && typeof range.parentElement === 'function') {
-                    parent = range.parentElement();
-                }
-            } catch (error) {
-                parent = null;
-            }
-            if (!range || typeof range.findText !== 'function' ||
-                !parent || (parent !== document.body && !document.body.contains(parent))) {
-                range = document.body.createTextRange();
-            }
-
-            try {
-                range.collapse(false);
-            } catch (error) {
-                range = document.body.createTextRange();
-            }
-
-            if (!range.findText(text)) {
-                return false;
-            }
-
-            range.select();
-            range.scrollIntoView(true);
-            return true;
+            document.attachEvent('onclick', mdviewerOnClick);
         }
         """;
 
     private const string Style = """
         html { -ms-text-size-adjust: 100%; }
-        ::selection { background: #ffdf70; color: #1f2328; }
         body {
             font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
             font-size: 15px;
@@ -228,7 +181,6 @@ internal static class HtmlPage
         // links are swallowed in that origin, so all link clicks are routed
         // through the hosting object rather than relying on Navigating events.
         html.Append("<script type=\"text/javascript\">\n").Append(LinkScript).Append("\n</script>\n");
-        html.Append("<script type=\"text/javascript\">\n").Append(FindScript).Append("\n</script>\n");
         html.Append("</head>\n<body>\n");
         html.Append(bodyHtml);
         html.Append("\n</body>\n</html>\n");

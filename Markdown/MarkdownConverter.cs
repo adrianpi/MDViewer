@@ -1,4 +1,4 @@
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// Controls the GitHub-flavoured extensions. The CommonMark core is always enabled;

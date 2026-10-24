@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// HTML5 named character references. CommonMark defers entity syntax to HTML5, so

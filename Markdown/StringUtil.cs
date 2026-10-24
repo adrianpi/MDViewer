@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>Small parsing helpers shared by the block, inline, and HTML layers.</summary>
 internal static class StringUtil

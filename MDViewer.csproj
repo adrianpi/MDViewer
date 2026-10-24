@@ -6,9 +6,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Md2Html</RootNamespace>
-    <AssemblyName>Md2Html</AssemblyName>
-    <StartupObject>Md2Html.Program</StartupObject>
+    <RootNamespace>MDViewer</RootNamespace>
+    <AssemblyName>MDViewer</AssemblyName>
+    <StartupObject>MDViewer.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

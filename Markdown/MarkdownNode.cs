@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// A node in the Markdown syntax tree. A single class is used for all node kinds,

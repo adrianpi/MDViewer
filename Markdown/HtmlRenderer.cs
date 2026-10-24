@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// Converts the syntax tree to HTML. The formatting (line breaks and tag layout)

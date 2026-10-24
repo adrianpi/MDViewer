@@ -1,4 +1,4 @@
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>An entry in the inline parser's delimiter stack for * _ and ~~.</summary>
 internal sealed class Delimiter

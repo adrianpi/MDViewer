@@ -1,4 +1,4 @@
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 public enum ListType
 {

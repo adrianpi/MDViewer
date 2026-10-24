@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Md2Html;
+namespace MDViewer;
 
 internal static class Program
 {

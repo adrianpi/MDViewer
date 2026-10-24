@@ -5,7 +5,7 @@ using System.Security;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace Md2Html;
+namespace MDViewer;
 
 /// <summary>
 /// Optionally opts this executable into the newest Internet Explorer rendering mode.

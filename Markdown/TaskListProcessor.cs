@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// GFM task list items: a list item whose first block is a paragraph beginning with

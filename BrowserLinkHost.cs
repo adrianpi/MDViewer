@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace Md2Html;
+namespace MDViewer;
 
 /// <summary>
 /// The object exposed to document JavaScript as <c>window.external</c>.

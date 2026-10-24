@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// GFM extended email autolinks. URLs beginning with http(s):// or www. are handled

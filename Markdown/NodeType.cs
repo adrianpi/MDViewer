@@ -1,4 +1,4 @@
-namespace Md2Html.Markdown;
+namespace MDViewer.Markdown;
 
 /// <summary>
 /// The node kinds of the Markdown syntax tree. The first group represents blocks,
