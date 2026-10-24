@@ -33,6 +33,16 @@ dotnet run -- "C:\path\to\document.md"
 
 The project targets `net10.0-windows`; any Windows .NET 10 SDK is sufficient.
 
+## Tests
+
+```powershell
+dotnet run --project test/Md2Html.Tests
+```
+
+The test runner has no external dependencies. It executes the CommonMark 0.31.2
+examples and the GitHub Flavored Markdown extension examples, plus a few focused
+option checks.
+
 ## Structure
 
 - `MarkdownConverter` (`Markdown/MarkdownConverter.cs`) is the public conversion
@@ -45,6 +55,8 @@ The project targets `net10.0-windows`; any Windows .NET 10 SDK is sufficient.
 - `MainForm.cs` contains only the viewer UI: menus, file handling, drag and drop,
   and the embedded browser.
 - `HtmlPage.cs` wraps the rendered HTML fragment in a full document with styling.
+- `test/Md2Html.Tests/` contains the dependency-free conversion test runner and
+  the official example data used by the tests.
 
 ## Notes
 

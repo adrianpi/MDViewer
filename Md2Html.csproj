@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- The test project lives below this project; it must not be compiled into
+         the viewer or its generated files will be picked up by the SDK glob. -->
+    <Compile Remove="test\**" />
+    <None Remove="test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- The HTML5 named character table used by CommonMark is data, not code,
          so it is kept in a resource instead of a 2000-line switch statement. -->
     <EmbeddedResource Include="Markdown\Resources\html-entities.txt" LogicalName="HtmlEntities.txt" />
