@@ -135,7 +135,11 @@ internal static class HtmlPage
             width: 100%;
             overflow: auto;
         }
-        table th { font-weight: 600; }
+        table th {
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #000000;
+        }
         table th, table td {
             padding: 6px 13px;
             border: 1px solid #d0d7de;
