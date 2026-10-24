@@ -43,7 +43,7 @@ the repository root:
 ```
 
 The script publishes a self-contained x64 release and creates
-`installer\Output\MDViewer-Setup-1.0.1.exe`. The installer offers an optional,
+`installer\Output\MDViewer-Setup-1.0.2.exe`. The installer offers an optional,
 checked-by-default checkbox for associating `.md` files with MDViewer, plus an
 optional desktop shortcut, and creates a Start menu shortcut with standard
 Windows uninstall support. The association is per-user and is restored (when
@@ -51,7 +51,7 @@ unchanged) if the application is uninstalled. The installer offers to open
 Windows Default apps settings so the user can confirm MDViewer for `.md` files
 when Windows protects an existing default-app choice.
 
-[Download the MDViewer 1.0.1 installer for Windows x64](installer/Output/MDViewer-Setup-1.0.1.exe).
+[Download the MDViewer 1.0.2 installer for Windows x64](installer/Output/MDViewer-Setup-1.0.2.exe).
 
 ## Tests
 

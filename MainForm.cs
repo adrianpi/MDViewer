@@ -106,11 +106,13 @@ public sealed class MainForm : Form, IMessageFilter
         _browser = new WebBrowser
         {
             Dock = DockStyle.Fill,
-            AllowWebBrowserDrop = false,
+            AllowWebBrowserDrop = true,
             WebBrowserShortcutsEnabled = true,
             IsWebBrowserContextMenuEnabled = true,
             ScriptErrorsSuppressed = true
         };
+        // WebBrowser does not support Control.AllowDrop. Its supported drop path
+        // navigates to the dropped file, which BrowserNavigating routes to our viewer.
         _browser.Navigating += BrowserNavigating;
         // Let the generated page ask the form to handle a link click. This is
         // necessary because WebBrowser does not raise Navigating for file:///
