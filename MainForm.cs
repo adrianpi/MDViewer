@@ -27,6 +27,7 @@ public sealed class MainForm : Form, IMessageFilter
     private readonly ToolStripMenuItem _printMenuItem;
 
     private string? _currentPath;
+    private string _lastSearchText = string.Empty;
     private bool _printPreviewOpen;
 
     public MainForm(string? initialFile = null)
@@ -59,8 +60,16 @@ public sealed class MainForm : Form, IMessageFilter
         fileMenu.DropDownItems.Add(new ToolStripSeparator());
         fileMenu.DropDownItems.Add(new ToolStripMenuItem("E&xit", null, (_, _) => Close()));
 
+        var editMenu = new ToolStripMenuItem("&Edit");
+        var findMenuItem = new ToolStripMenuItem("&Find...", null, FindClicked)
+        {
+            ShortcutKeys = Keys.Control | Keys.F
+        };
+        editMenu.DropDownItems.Add(findMenuItem);
+
         var menu = new MenuStrip();
         menu.Items.Add(fileMenu);
+        menu.Items.Add(editMenu);
         menu.Dock = DockStyle.Fill;
 
         // ---- toolbar ------------------------------------------------------
@@ -153,19 +162,103 @@ public sealed class MainForm : Form, IMessageFilter
 
     public bool PreFilterMessage(ref Message m)
     {
-        // The WebBrowser ActiveX control handles Ctrl+P itself before the menu
-        // shortcut sees it. Intercepting the key at the application message loop
-        // makes Ctrl+P use our print preview consistently.
         if (m.Msg != WmKeyDown ||
-            m.WParam != (IntPtr)Keys.P ||
             (ModifierKeys & Keys.Control) == 0 ||
             (ModifierKeys & (Keys.Alt | Keys.Shift)) != 0)
         {
             return false;
         }
 
-        PrintClicked(this, EventArgs.Empty);
-        return true;
+        // The WebBrowser ActiveX control handles Ctrl+P and Ctrl+F itself before
+        // the menu shortcut sees them, so intercept both at the message loop.
+        if (m.WParam == (IntPtr)Keys.P)
+        {
+            PrintClicked(this, EventArgs.Empty);
+            return true;
+        }
+
+        if (m.WParam == (IntPtr)Keys.F && ActiveForm == this)
+        {
+            FindClicked(this, EventArgs.Empty);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Displays the modal find dialog and keeps its search text for the next use.
+    /// </summary>
+    private void FindClicked(object? sender, EventArgs e)
+    {
+        using var dialog = new Form
+        {
+            Text = "Find Text",
+            FormBorderStyle = FormBorderStyle.FixedDialog,
+            StartPosition = FormStartPosition.CenterParent,
+            ShowInTaskbar = false,
+            MinimizeBox = false,
+            MaximizeBox = false,
+            ClientSize = new Size(360, 104)
+        };
+
+        var searchLabel = new Label
+        {
+            Text = "Search:",
+            AutoSize = true,
+            Location = new Point(12, 14)
+        };
+        var searchBox = new TextBox
+        {
+            Location = new Point(70, 11),
+            Width = 278,
+            Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+            Text = _lastSearchText
+        };
+        var findButton = new Button
+        {
+            Text = "Find",
+            DialogResult = DialogResult.None,
+            Location = new Point(268, 60),
+            Size = new Size(80, 30),
+            Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+        };
+        findButton.Click += (_, _) =>
+        {
+            _lastSearchText = searchBox.Text;
+            FindText(searchBox.Text);
+        };
+        dialog.FormClosed += (_, _) => _lastSearchText = searchBox.Text;
+        dialog.Controls.Add(searchLabel);
+        dialog.Controls.Add(searchBox);
+        dialog.Controls.Add(findButton);
+        dialog.AcceptButton = findButton;
+        dialog.Shown += (_, _) =>
+        {
+            searchBox.Focus();
+            searchBox.SelectAll();
+        };
+
+        dialog.ShowDialog(this);
+    }
+
+    /// <summary>
+    /// Finds the next occurrence in the rendered page, starting at the current
+    /// browser selection or caret position.
+    /// </summary>
+    private void FindText(string text)
+    {
+        if (text.Length == 0 || _browser.Document is null)
+        {
+            return;
+        }
+
+        object? result = _browser.Document.InvokeScript("md2htmlFindText", [text]);
+        if (!Equals(result, true))
+        {
+            MessageBox.Show(this, "Not found", "Find Text",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 
     private void OpenClicked(object? sender, EventArgs e)
